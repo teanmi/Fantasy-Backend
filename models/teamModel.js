@@ -12,3 +12,29 @@ exports.createTeam = (teamName, leagueID, callback) => {
       callback(err, result);
     });
 };
+
+exports.viewTeamByNameAndLeague = (teamName, leagueID, callback) => {
+    const query = `
+      SELECT * FROM Teams
+      WHERE teamName = ? AND leagueID = ?;
+    `;
+  
+    const values = [teamName, leagueID];
+  
+    db.query(query, values, (err, result) => {
+      callback(err, result);
+    });
+};
+
+exports.viewTeamByID = (teamID, callback) => {
+    const query = `
+      SELECT * FROM Teams
+      WHERE teamID = ?;
+    `;
+  
+    const values = [teamID];
+  
+    db.query(query, values, (err, result) => {
+      callback(err, result);
+    });
+};
