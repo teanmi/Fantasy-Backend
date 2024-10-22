@@ -6,6 +6,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
         INSERT INTO Leagues (
             reg_season_count, 
             team_count, 
+            current_team_count,
             playoff_team_count, 
             Name, 
             tie_rule, 
@@ -21,6 +22,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
   const values = [
     14, // default
     numTeams,
+    0, // default
     numTeams / 2, // default
     leagueName,
     null, // tie_rule (optional)
@@ -36,11 +38,40 @@ exports.createLeague = (leagueName, numTeams, callback) => {
   });
 };
 
+exports.getTeamCountAndMax = (leagueID, callback) => {
+    const query = `
+      SELECT current_team_count, team_count 
+      FROM Leagues 
+      WHERE leagueID = ?;
+    `;
+    
+    db.query(query, [leagueID], (err, result) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, result[0]); // Assuming only one result is returned
+      }
+    });
+  };
+
+exports.incrementTeamCount = (leagueID, callback) => {
+  const query = `
+      UPDATE Leagues 
+      SET current_team_count = current_team_count + 1
+      WHERE leagueID = ?;
+    `;
+
+  db.query(query, [leagueID], (err, result) => {
+    callback(err, result);
+  });
+};
+
 exports.viewLeagueByName = (leagueName, callback) => {
   const query = `
     SELECT 
       reg_season_count, 
       team_count, 
+      current_team_count,
       playoff_team_count, 
       Name, 
       tie_rule, 
@@ -61,7 +92,7 @@ exports.viewLeagueByName = (leagueName, callback) => {
 };
 
 exports.viewLeagueByID = (leagueID, callback) => {
-  const query = "SELECT * FROM Leagues WHERE leagueID = ?"; // Assuming "id" is your league's unique identifier
+  const query = "SELECT * FROM Leagues WHERE leagueID = ?";
 
   db.query(query, [leagueID], (err, result) => {
     callback(err, result); // Return the result or error

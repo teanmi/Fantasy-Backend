@@ -37,3 +37,13 @@ exports.viewTeamByID = (teamID, callback) => {
     callback(err, result);
   });
 };
+
+exports.getTeamsByLeagueID = (leagueID, callback) => {
+    const query = `
+      SELECT * FROM Teams WHERE leagueID = ?;
+    `;
+  
+    db.query(query, [leagueID], (err, result) => {
+      callback(err, result);
+    });
+  };

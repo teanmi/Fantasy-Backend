@@ -13,6 +13,7 @@ router.get("/leagues/:leagueID", leagueController.viewLeagueByID);
 
 // Teams Routes
 router.post("/leagues/:leagueID/create-team", teamController.createTeam);
+router.get("/leagues/:leagueID/teams", teamController.getTeamsByLeagueID);
 // router.post("/teams/idview", teamController.viewTeamByID);
 // router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 
