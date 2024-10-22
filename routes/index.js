@@ -7,13 +7,14 @@ const teamController = require("../controllers/teamController");
 const playerController = require("../controllers/playerController");
 
 // Leagues Routes
-router.post("/leagues/create", leagueController.createLeague);
-router.get("/leagues/:leagueID", leagueController.viewLeagueByID);
-// router.post("/leagues/nameview", leagueController.viewLeagueByName); 
+router.post("/league/create", leagueController.createLeague);
+router.get("/league/:leagueID", leagueController.viewLeagueByID);
+router.get("/league/:leagueID/validate-code" , leagueController.validateLeagueCode);
+// router.post("/league/nameview", leagueController.viewLeagueByName); 
 
 // Teams Routes
-router.post("/leagues/:leagueID/create-team", teamController.createTeam);
-router.get("/leagues/:leagueID/teams", teamController.getTeamsByLeagueID);
+router.post("/league/:leagueID/create-team", teamController.createTeam);
+router.get("/league/:leagueID/teams", teamController.getTeamsByLeagueID);
 // router.post("/teams/idview", teamController.viewTeamByID);
 // router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 

@@ -39,20 +39,20 @@ exports.createLeague = (leagueName, numTeams, callback) => {
 };
 
 exports.getTeamCountAndMax = (leagueID, callback) => {
-    const query = `
+  const query = `
       SELECT current_team_count, team_count 
       FROM Leagues 
       WHERE leagueID = ?;
     `;
-    
-    db.query(query, [leagueID], (err, result) => {
-      if (err) {
-        callback(err, null);
-      } else {
-        callback(null, result[0]); // Assuming only one result is returned
-      }
-    });
-  };
+
+  db.query(query, [leagueID], (err, result) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, result[0]); // Assuming only one result is returned
+    }
+  });
+};
 
 exports.incrementTeamCount = (leagueID, callback) => {
   const query = `
@@ -87,6 +87,18 @@ exports.viewLeagueByName = (leagueName, callback) => {
   const values = [leagueName];
 
   db.query(query, values, (err, result) => {
+    callback(err, result);
+  });
+};
+
+exports.validateLeagueCode = (leagueID, callback) => {
+  const query = `
+        SELECT current_team_count, team_count 
+        FROM Leagues 
+        WHERE leagueID = ?;
+        `;
+
+  db.query(query, [leagueID], (err, result) => {
     callback(err, result);
   });
 };
