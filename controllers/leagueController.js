@@ -7,29 +7,30 @@ exports.createLeague = (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  League.createLeague(leagueName, numTeams, (err, result) => {
+  League.createLeague(leagueName, numTeams, (err, leagueID) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
     }
+
     res.status(201).json({
       message: "League created successfully!",
-      leagueId: result.insertId,
+      leagueID: leagueID,
     });
   });
 };
 
-exports.viewLeagueByName = (req, res) => {
-  const { leagueName } = req.params;
-  
-  if (!leagueName) {
-    return res.status(400).json({ message: "League name is required" });
+exports.viewLeagueByID = (req, res) => {
+  const { leagueID } = req.params; // Get the dynamic leagueID from the URL
+
+  if (!leagueID) {
+    return res.status(400).json({ message: "League ID is required" });
   }
 
-  League.viewLeagueByName(leagueName, (err, result) => {
+  League.viewLeagueByID(leagueID, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
     }
-    
+
     if (result.length === 0) {
       return res.status(404).json({ message: "League not found" });
     }
@@ -41,18 +42,18 @@ exports.viewLeagueByName = (req, res) => {
   });
 };
 
-exports.viewLeagueByID = (req, res) => {
-  const { leagueID } = req.params;
-  
-  if (!leagueID) {
-    return res.status(400).json({ message: "League ID is required" });
+exports.viewLeagueByName = (req, res) => {
+  const { leagueName } = req.params;
+
+  if (!leagueName) {
+    return res.status(400).json({ message: "League name is required" });
   }
 
-  League.viewLeague(leagueID, (err, result) => {
+  League.viewLeagueByName(leagueName, (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Database error", error: err });
     }
-    
+
     if (result.length === 0) {
       return res.status(404).json({ message: "League not found" });
     }

@@ -16,7 +16,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
             scoringID
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    
+
   // Setting optional fields to null (or default values)
   const values = [
     14, // default
@@ -32,7 +32,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
   ];
 
   db.query(query, values, (err, result) => {
-    callback(err, result); // Call the provided callback with the error or result
+    callback(err, result.insertId); // Call the provided callback with the error or result
   });
 };
 
@@ -61,25 +61,9 @@ exports.viewLeagueByName = (leagueName, callback) => {
 };
 
 exports.viewLeagueByID = (leagueID, callback) => {
-  const query = `
-    SELECT 
-      reg_season_count, 
-      team_count, 
-      playoff_team_count, 
-      Name, 
-      tie_rule, 
-      playoff_tie_rule, 
-      playoff_seed_tie_rule, 
-      playoff_matchup_period_length, 
-      faab, 
-      scoringID
-    FROM Leagues
-    WHERE leagueID = ?;
-  `;
+  const query = "SELECT * FROM Leagues WHERE leagueID = ?"; // Assuming "id" is your league's unique identifier
 
-  const values = [leagueID];
-
-  db.query(query, values, (err, result) => {
-    callback(err, result);
+  db.query(query, [leagueID], (err, result) => {
+    callback(err, result); // Return the result or error
   });
 };

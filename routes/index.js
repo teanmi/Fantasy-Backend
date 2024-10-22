@@ -8,13 +8,13 @@ const playerController = require("../controllers/playerController");
 
 // Leagues Routes
 router.post("/leagues/create", leagueController.createLeague);
-router.post("/leagues/idview", leagueController.viewLeagueByID);
-router.post("/leagues/nameview", leagueController.viewLeagueByName);
+router.get("/leagues/:leagueID", leagueController.viewLeagueByID);
+// router.post("/leagues/nameview", leagueController.viewLeagueByName); 
 
 // Teams Routes
-router.post("/teams/create", teamController.createTeam);
-router.post("/teams/idview", teamController.viewTeamByID);
-router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
+router.post("/leagues/:leagueID/create-team", teamController.createTeam);
+// router.post("/teams/idview", teamController.viewTeamByID);
+// router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 
 // Player Routes
 router.post("/players/viewall", playerController.viewAllPlayers);
