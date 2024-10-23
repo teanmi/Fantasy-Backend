@@ -21,6 +21,7 @@ router.get("/teams/:teamID/players", teamController.getPlayersByTeamID);
 
 // Player Routes
 router.get("/players/viewall", playerController.viewAllPlayers);
+router.post("/players/:playerID/claim", playerController.claimPlayer);
 
 // Export the router
 module.exports = router;
