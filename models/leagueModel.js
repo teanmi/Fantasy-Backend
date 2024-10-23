@@ -15,7 +15,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
             playoff_matchup_period_length, 
             faab, 
             scoringID
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
   // Setting optional fields to null (or default values)
@@ -34,6 +34,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
   ];
 
   db.query(query, values, (err, result) => {
+    console.log(err)
     callback(err, result.insertId); // Call the provided callback with the error or result
   });
 };
