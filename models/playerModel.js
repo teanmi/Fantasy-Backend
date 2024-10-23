@@ -33,3 +33,16 @@ exports.getPlayersWithTeams = (position, leagueID) => {
     });
   });
 };
+
+exports.claimPlayer = (playerID, teamID, leagueID, callback) => {
+  const query = `
+      INSERT INTO PlayerTeam (playerID, teamID, leagueID)
+      VALUES (?, ?, ?);
+    `;
+
+  const values = [playerID, teamID, leagueID];
+
+  db.query(query, values, (err, result) => {
+    callback(err, result);
+  });
+};
