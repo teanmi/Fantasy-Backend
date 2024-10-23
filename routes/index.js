@@ -19,7 +19,7 @@ router.get("/league/:leagueID/teams", teamController.getTeamsByLeagueID);
 // router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 
 // Player Routes
-router.post("/players/viewall", playerController.viewAllPlayers);
+router.get("/players/viewall", playerController.viewAllPlayers);
 
 // Export the router
 module.exports = router;

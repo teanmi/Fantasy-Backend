@@ -1,18 +1,13 @@
-const Team = require("../models/playerModel");
+const Player = require("../models/playerModel");
 
-exports.viewAllPlayers = (req, res) => {
-    Player.viewAllPlayers((err, result) => {
-      if (err) {
-        return res.status(500).json({ message: "Database error", error: err });
-      }
+exports.viewAllPlayers = async (req, res) => {
+  const { position, leagueID } = req.query; // Get position and leagueID from query parameters
   
-      if (result.length === 0) {
-        return res.status(404).json({ message: "No players found" });
-      }
-  
-      res.status(200).json({
-        message: "Players retrieved successfully",
-        players: result,
-      });
-    });
-  };
+  try {
+    const players = await Player.getPlayersWithTeams(position, leagueID); // Call the model function
+    res.status(200).json(players); // Respond with the player data
+  } catch (error) {
+    console.error("Error fetching players:", error);
+    res.status(500).json({ message: "Failed to fetch players", error });
+  }
+};
