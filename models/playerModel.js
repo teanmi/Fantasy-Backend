@@ -13,10 +13,10 @@ exports.getPlayersWithTeams = (position, leagueID) => {
         LEFT JOIN 
           PlayerTeam pt ON p.playerID = pt.playerID AND pt.leagueID = ?
         LEFT JOIN 
-          Teams t ON pt.teamID = t.teamID
+          Teams t ON pt.teamID = t.teamID AND t.leagueID = ?
       `;
 
-    const queryParams = [leagueID];
+    const queryParams = [leagueID, leagueID];
 
     // Add filtering by position if it's provided
     if (position) {
@@ -28,7 +28,7 @@ exports.getPlayersWithTeams = (position, leagueID) => {
       if (err) {
         return reject(err); // Handle any errors
       }
-      console.log(results);
+
       resolve(results); // Return the results
     });
   });

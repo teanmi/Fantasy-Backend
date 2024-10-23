@@ -15,7 +15,8 @@ router.get("/league/:leagueID/validate-code" , leagueController.validateLeagueCo
 // Teams Routes
 router.post("/league/:leagueID/create-team", teamController.createTeam);
 router.get("/league/:leagueID/teams", teamController.getTeamsByLeagueID);
-// router.post("/teams/idview", teamController.viewTeamByID);
+router.get("/teams/:teamID", teamController.getTeamByID);
+router.get("/teams/:teamID/players", teamController.getPlayersByTeamID);
 // router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 
 // Player Routes
