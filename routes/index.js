@@ -5,6 +5,7 @@ const router = express.Router();
 const leagueController = require("../controllers/leagueController");
 const teamController = require("../controllers/teamController");
 const playerController = require("../controllers/playerController");
+const authController = require("../controllers/authController");
 
 // Leagues Routes
 router.post("/league/create", leagueController.createLeague);
@@ -22,6 +23,9 @@ router.get("/teams/:teamID/players", teamController.getPlayersByTeamID);
 // Player Routes
 router.get("/players/viewall", playerController.viewAllPlayers);
 router.post("/players/:playerID/claim", playerController.claimPlayer);
+
+// Auth Routes
+router.post("/auth/login", authController.login);
 
 // Export the router
 module.exports = router;
