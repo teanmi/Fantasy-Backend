@@ -2,18 +2,25 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  // Fetch user from the database
-  const user = await User.findUserByUsername(username);
+    const user = await User.findUserByUsername(username);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-  // Validate credentials
-  if (user && isMatch) {
-    return res.status(200).json({ id: user.id, username: user.username });
+    if (isMatch) {
+      return res.status(200).json({ id: user.id, username: user.username });
+    }
+
+    return res.status(401).json({ error: 'Invalid credentials' });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Server error' });
   }
-  return res.status(401).json({ error: "Invalid credentials" });
 };
 
 exports.register = async (req, res) => {
