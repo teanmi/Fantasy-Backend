@@ -8,7 +8,7 @@ exports.createLeague = (leagueName, numTeams, callback) => {
             team_count, 
             current_team_count,
             playoff_team_count, 
-            Name, 
+            name, 
             tie_rule, 
             playoff_tie_rule, 
             playoff_seed_tie_rule, 
