@@ -26,6 +26,7 @@ router.post("/players/:playerID/claim", playerController.claimPlayer);
 
 // Auth Routes
 router.post("/auth/login", authController.login);
+router.post("/auth/register", authController.register);
 
 // Export the router
 module.exports = router;
