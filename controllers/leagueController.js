@@ -119,3 +119,18 @@ exports.linkUserToLeague = (req, res) => {
   });
 };
 
+exports.getLeaguesForUser = (req, res) => {
+  const { userID } = req.params;
+
+  if (!userID) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  League.getLeaguesForUser(userID, (err, leagues) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to fetch leagues", error: err });
+    }
+
+    res.status(200).json({ leagues });
+  });
+};

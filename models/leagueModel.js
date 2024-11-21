@@ -133,3 +133,15 @@ exports.isUserInLeague = (userID, leagueID, callback) => {
   });
 };
 
+exports.getLeaguesForUser = (userID, callback) => {
+  const query = `
+    SELECT l.leagueID, l.name, l.team_count, l.current_team_count
+    FROM Leagues l
+    JOIN LeagueUser lu ON l.leagueID = lu.leagueID
+    WHERE lu.userID = ?;
+  `;
+
+  db.query(query, [userID], (err, results) => {
+    callback(err, results);
+  });
+};
