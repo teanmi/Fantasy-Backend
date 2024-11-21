@@ -122,3 +122,14 @@ exports.linkUserToLeague = (userID, leagueID, callback) => {
   });
 };
 
+exports.isUserInLeague = (userID, leagueID, callback) => {
+  const query = `
+    SELECT * FROM LeagueUser 
+    WHERE userID = ? AND leagueID = ?;
+  `;
+
+  db.query(query, [userID, leagueID], (err, result) => {
+    callback(err, result);
+  });
+};
+

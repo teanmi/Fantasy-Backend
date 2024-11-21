@@ -100,11 +100,22 @@ exports.linkUserToLeague = (req, res) => {
     return res.status(400).json({ message: "User ID and League ID are required" });
   }
 
-  League.linkUserToLeague(userID, leagueID, (err, result) => {
+  League.isUserInLeague(userID, leagueID, (err, result) => {
     if (err) {
-      return res.status(500).json({ message: "Failed to link user to league", error: err });
+      return res.status(500).json({ message: "Database error", error: err });
     }
 
-    res.status(201).json({ message: "User successfully linked to league", linkID: result.insertId });
+    if (result.length > 0) {
+      return res.status(400).json({ message: "User is already in this league" });
+    }
+
+    League.linkUserToLeague(userID, leagueID, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Failed to link user to league", error: err });
+      }
+
+      res.status(201).json({ message: "User successfully linked to league", linkID: result.insertId });
+    });
   });
 };
+
