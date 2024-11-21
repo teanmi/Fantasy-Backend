@@ -87,3 +87,14 @@ exports.getTeamsByLeagueID = (leagueID, callback) => {
       callback(err, result);
     });
   };
+
+  exports.linkUserToTeam = (userID, teamID, callback) => {
+    const query = `
+      INSERT INTO TeamUser (userID, teamID)
+      VALUES (?, ?);
+    `;
+    db.query(query, [userID, teamID], (err, result) => {
+      callback(err, result);
+    });
+  };
+  

@@ -111,3 +111,14 @@ exports.viewLeagueByID = (leagueID, callback) => {
     callback(err, result); // Return the result or error
   });
 };
+
+exports.linkUserToLeague = (userID, leagueID, callback) => {
+  const query = `
+    INSERT INTO LeagueUser (userID, leagueID)
+    VALUES (?, ?);
+  `;
+  db.query(query, [userID, leagueID], (err, result) => {
+    callback(err, result);
+  });
+};
+

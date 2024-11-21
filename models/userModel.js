@@ -30,13 +30,18 @@ exports.findUserByEmail = (email) => {
   });
 };
 
-exports.createUser = async (username, email, password, callback) => {
-  const query =
-    "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
+exports.createUser = async (username, email, password) => {
+  return new Promise((resolve, reject) => {
+    const query = 
+      "INSERT INTO Users (username, email, password) VALUES (?, ?, ?)";
 
     const values = [username, email, password];
 
     db.query(query, values, (err, result) => {
-      callback(err, result);
+      if (err) {
+        return reject(err);
+      }
+      resolve({ UserID: result.insertId });
     });
+  });
 };

@@ -13,7 +13,10 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
-      return res.status(200).json({ id: user.id, username: user.username });
+      return res.status(200).json({ 
+        userID: user.UserID, 
+        username: user.username 
+      });
     }
 
     return res.status(401).json({ error: 'Invalid credentials' });
@@ -42,14 +45,14 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user in the database
-    User.createUser(username, email, hashedPassword, (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: "Internal server error" });
-      }
-      return res.status(201).json({ message: "User created successfully" });
+    const newUser = await User.createUser(username, email, hashedPassword);
+    return res.status(201).json({ 
+      message: "User created successfully",
+      userID: newUser.UserID // Include the UserID in the response
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+

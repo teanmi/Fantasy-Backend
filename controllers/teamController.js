@@ -146,3 +146,19 @@ exports.getTeamsByLeagueID = (req, res) => {
     });
   });
 };
+
+exports.linkUserToTeam = (req, res) => {
+  const { userID, teamID } = req.body;
+
+  if (!userID || !teamID) {
+    return res.status(400).json({ message: "User ID and Team ID are required" });
+  }
+
+  Team.linkUserToTeam(userID, teamID, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to link user to team", error: err });
+    }
+
+    res.status(201).json({ message: "User successfully linked to team", linkID: result.insertId });
+  });
+};

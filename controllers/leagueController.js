@@ -92,3 +92,19 @@ exports.viewLeagueByName = (req, res) => {
     });
   });
 };
+
+exports.linkUserToLeague = (req, res) => {
+  const { userID, leagueID } = req.body;
+
+  if (!userID || !leagueID) {
+    return res.status(400).json({ message: "User ID and League ID are required" });
+  }
+
+  League.linkUserToLeague(userID, leagueID, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to link user to league", error: err });
+    }
+
+    res.status(201).json({ message: "User successfully linked to league", linkID: result.insertId });
+  });
+};
