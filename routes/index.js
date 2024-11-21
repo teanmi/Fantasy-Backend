@@ -21,6 +21,8 @@ router.get("/league/:leagueID/teams", teamController.getTeamsByLeagueID);
 router.get("/teams/:teamID", teamController.getTeamByID);
 router.get("/teams/:teamID/players", teamController.getPlayersByTeamID);
 router.post("/teams/user-link", teamController.linkUserToTeam);
+router.post('/teams/link', teamController.linkUserToTeam);
+router.post('/user-team', teamController.getUserTeam);
 // router.post("/teams/nameandleagueview", teamController.viewTeamByNameAndLeague);
 
 // Player Routes

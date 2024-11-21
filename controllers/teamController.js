@@ -148,17 +148,47 @@ exports.getTeamsByLeagueID = (req, res) => {
 };
 
 exports.linkUserToTeam = (req, res) => {
-  const { userID, teamID } = req.body;
+  const { userID, teamID, leagueID } = req.body;
 
-  if (!userID || !teamID) {
-    return res.status(400).json({ message: "User ID and Team ID are required" });
+  if (!userID || !teamID || !leagueID) {
+    return res.status(400).json({ message: "userID, teamID, and leagueID are required" });
   }
 
-  Team.linkUserToTeam(userID, teamID, (err, result) => {
+  Team.doesUserHaveTeam(userID, leagueID, (err, result) => {
     if (err) {
-      return res.status(500).json({ message: "Failed to link user to team", error: err });
+      return res.status(500).json({ message: "Database error", error: err });
     }
 
-    res.status(201).json({ message: "User successfully linked to team", linkID: result.insertId });
+    if (result.length > 0) {
+      return res.status(400).json({ message: "User already has a team in this league" });
+    }
+
+    Team.linkUserToTeam(userID, teamID, leagueID, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Failed to link user to team", error: err });
+      }
+
+      res.status(201).json({
+        message: "User successfully linked to team",
+        linkID: result.insertId,
+      });
+    });
   });
 };
+
+exports.getUserTeam = (req, res) => {
+  const { userID, leagueID } = req.body;
+
+  Team.getUserTeam(userID, leagueID, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Error fetching user team", error: err });
+    }
+
+    if (!result) {
+      return res.status(404).json({ message: "User does not have a team in this league" });
+    }
+
+    res.status(200).json({ teamID: result.teamID });
+  });
+};
+

@@ -88,13 +88,44 @@ exports.getTeamsByLeagueID = (leagueID, callback) => {
     });
   };
 
-  exports.linkUserToTeam = (userID, teamID, callback) => {
+  exports.linkUserToTeam = (userID, teamID, leagueID, callback) => {
     const query = `
-      INSERT INTO TeamUser (userID, teamID)
-      VALUES (?, ?);
+      INSERT INTO TeamUser (userID, teamID, leagueID)
+      VALUES (?, ?, ?);
     `;
-    db.query(query, [userID, teamID], (err, result) => {
+    db.query(query, [userID, teamID, leagueID], (err, result) => {
       callback(err, result);
+    });
+  };
+  
+  exports.doesUserHaveTeam = (userID, leagueID, callback) => {
+    const query = `
+      SELECT * FROM TeamUser 
+      WHERE userID = ? AND leagueID = ?;
+    `;
+  
+    db.query(query, [userID, leagueID], (err, result) => {
+      callback(err, result);
+    });
+  };
+
+  exports.getUserTeam = (userID, leagueID, callback) => {
+    const query = `
+      SELECT teamID
+      FROM TeamUser
+      WHERE userID = ? AND leagueID = ?;
+    `;
+    
+    db.query(query, [userID, leagueID], (err, result) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        if (result.length > 0) {
+          callback(null, result[0]);
+        } else {
+          callback(null, null);
+        }
+      }
     });
   };
   
