@@ -46,3 +46,63 @@ exports.claimPlayer = (playerID, teamID, leagueID, callback) => {
     callback(err, result);
   });
 };
+
+exports.getEligibleSlots = (playerID, callback) => {
+  const query = `
+    SELECT eligible_slots
+    FROM Players
+    WHERE playerID = ?;
+  `;
+
+  db.query(query, [playerID], (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+
+    if (result.length > 0) {
+      callback(null, result[0].eligible_slots);
+    } else {
+      callback(null, null);
+    }
+  });
+};
+
+exports.updatePlayerSlot = (playerID, teamID, leagueID, newSlot, callback) => {
+  const query = `
+    UPDATE PlayerTeam
+    SET slot = ?
+    WHERE playerID = ? AND teamID = ? AND leagueID = ?;
+  `;
+
+  db.query(query, [newSlot, playerID, teamID, leagueID], (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+
+    if (result.affectedRows === 0) {
+      return callback(null, { message: "Player slot update failed. Ensure the player is in the team." });
+    }
+
+    callback(null, { message: "Player slot updated successfully" });
+  });
+};
+
+exports.getPlayerSlot = (playerID, teamID, leagueID, callback) => {
+  const query = `
+    SELECT slot
+    FROM PlayerTeam
+    WHERE playerID = ? AND teamID = ? AND leagueID = ?
+  `;
+
+  db.query(query, [playerID, teamID, leagueID], (err, result) => {
+    if (err) {
+      return callback(err, null);
+    }
+
+    if (result.length === 0) {
+      return callback(null, { message: "Player not found in this team" });
+    }
+
+    callback(null, result[0].slot);
+  });
+};

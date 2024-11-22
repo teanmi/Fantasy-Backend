@@ -28,6 +28,9 @@ router.post('/user-team', teamController.getUserTeam);
 // Player Routes
 router.get("/players/viewall", playerController.viewAllPlayers);
 router.post("/players/:playerID/claim", playerController.claimPlayer);
+router.get('/players/:playerID/eligible-slots', playerController.getEligibleSlots);
+router.put('/player-slot', playerController.updateSlot);
+router.get('/players/:playerID/slot/:teamID/:leagueID', playerController.getPlayerSlot);
 
 // Auth Routes
 router.post("/auth/login", authController.login);
