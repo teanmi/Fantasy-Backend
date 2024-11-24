@@ -106,3 +106,43 @@ exports.getPlayerSlot = (playerID, teamID, leagueID, callback) => {
     callback(null, result[0].slot);
   });
 };
+
+exports.getFantasyPoints = (playerID, week, callback) => {
+  const query = `
+    SELECT fantasy_points
+    FROM PlayerStatistics
+    WHERE playerID = ? AND week = ?
+  `;
+
+  db.query(query, [playerID, week], (err, result) => {
+    if (err) {
+      return callback(err, null); // Pass error to the callback
+    }
+
+    if (result.length === 0) {
+      return callback(null, { message: "No fantasy points found for the given player and week" }); // No data found
+    }
+
+    callback(null, result[0].fantasy_points); // Return fantasy points
+  });
+};
+
+exports.getProjectedFantasyPoints = (playerID, week, callback) => {
+  const query = `
+    SELECT fantasy_points
+    FROM ProjectedPlayerStatistics
+    WHERE playerID = ? AND week = ?
+  `;
+
+  db.query(query, [playerID, week], (err, result) => {
+    if (err) {
+      return callback(err, null); // Pass the error to the callback
+    }
+
+    if (result.length === 0) {
+      return callback(null, { message: "No projected fantasy points found for the given player and week" }); // No data found
+    }
+
+    callback(null, result[0].fantasy_points); // Return the projected fantasy points
+  });
+};

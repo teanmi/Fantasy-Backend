@@ -80,3 +80,49 @@ exports.getPlayerSlot = (req, res) => {
     res.status(200).json({ slot: result });
   });
 };
+
+exports.getFantasyPoints = (req, res) => {
+  const { playerID, week } = req.query;
+
+  // Validate inputs
+  if (!playerID || !week) {
+    return res.status(400).json({ error: "playerID and week are required" });
+  }
+
+  // Fetch the fantasy points using the model
+  Player.getFantasyPoints(playerID, week, (err, fantasyPoints) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (fantasyPoints.message) {
+      return res.status(404).json({ error: fantasyPoints.message });
+    }
+
+    res.status(200).json({ fantasy_points: fantasyPoints });
+  });
+};
+
+exports.getProjectedFantasyPoints = (req, res) => {
+  const { playerID, week } = req.query;
+
+  // Validate inputs
+  if (!playerID || !week) {
+    return res.status(400).json({ error: "playerID and week are required" });
+  }
+
+  // Fetch the projected fantasy points using the model
+  Player.getProjectedFantasyPoints(playerID, week, (err, fantasyPoints) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (fantasyPoints.message) {
+      return res.status(404).json({ error: fantasyPoints.message });
+    }
+
+    res.status(200).json({ fantasy_points: fantasyPoints });
+  });
+};

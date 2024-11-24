@@ -135,11 +135,16 @@ exports.getLeaguesForUser = (req, res) => {
   });
 };
 
-exports.getCurrentWeek = async (req, res) => {
-  try {
-      const currentWeek = await fetchCurrentWeekFromESPN();
-      res.status(200).json({ currentWeek });
-  } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch current week.', details: error.message });
-  }
+exports.getMaxWeek = (req, res) => {
+  League.getMaxWeek((err, maxWeek) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error fetching max week from database', error: err });
+    }
+
+    if (maxWeek === null) {
+      return res.status(404).json({ message: 'No data found in PlayerStatistics table.' });
+    }
+
+    res.status(200).json({ maxWeek });
+  });
 };

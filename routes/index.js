@@ -13,7 +13,7 @@ router.get("/league/:leagueID", leagueController.viewLeagueByID);
 router.get("/league/:leagueID/validate-code" , leagueController.validateLeagueCode);
 router.post("/league/user-link", leagueController.linkUserToLeague);
 router.get("/user/:userID/leagues", leagueController.getLeaguesForUser);
-router.get('/current-week', leagueController.getCurrentWeek);
+router.get('/max-week', leagueController.getMaxWeek);
 // router.post("/league/nameview", leagueController.viewLeagueByName); 
 
 // Teams Routes
@@ -32,6 +32,8 @@ router.post("/players/:playerID/claim", playerController.claimPlayer);
 router.get('/players/:playerID/eligible-slots', playerController.getEligibleSlots);
 router.put('/player-slot', playerController.updateSlot);
 router.get('/players/:playerID/slot/:teamID/:leagueID', playerController.getPlayerSlot);
+router.get("/fantasy-points", playerController.getFantasyPoints);
+router.get("/projected-fantasy-points", playerController.getProjectedFantasyPoints);
 
 // Auth Routes
 router.post("/auth/login", authController.login);
