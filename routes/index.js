@@ -13,6 +13,7 @@ router.get("/league/:leagueID", leagueController.viewLeagueByID);
 router.get("/league/:leagueID/validate-code" , leagueController.validateLeagueCode);
 router.post("/league/user-link", leagueController.linkUserToLeague);
 router.get("/user/:userID/leagues", leagueController.getLeaguesForUser);
+router.get('/current-week', leagueController.getCurrentWeek);
 // router.post("/league/nameview", leagueController.viewLeagueByName); 
 
 // Teams Routes

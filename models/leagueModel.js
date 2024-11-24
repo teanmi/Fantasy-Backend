@@ -145,3 +145,25 @@ exports.getLeaguesForUser = (userID, callback) => {
     callback(err, results);
   });
 };
+
+exports.fetchCurrentWeekFromESPN = async () => {
+  const leagueId = 354198803;
+  const seasonYear = 2024;
+  const espnS2 = 'AEAIZWXmXz%2B3llbOAtfqrtzW3f%2B4wEkEpDS%2BpNlM8fhs9KcPv%2FWzPO1ekTYUepb5yFfl%2FLcG7ftwfAdB56J%2BKwlMx16ayKOvKfrQisVluqXZl4Uw%2F6c4cQBUFsfuauyq1cY7eXoXQDHZKzwGhvHRCKJOc5ON%2Burx2aT69hs3BNxQnNmuECgPPNzUDgI6myej5Aqqw85zUfO4C6lHh8b%2BVhCqRhDiZy2gOExNWqEZ2Ahc8wXQ6wlN3zh44zYsu%2Fz2hBC8NJ6n8PL6l3qE4M8inY5cE8XpKaBI0k6CQhH%2BgWst4Q%3D%3D';
+  const swid = '{9BC0B2D2-78ED-4395-87C5-776E8EFB14FC}';
+
+  const url = `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${seasonYear}/segments/0/leagues/${leagueId}`;
+
+  try {
+      const response = await axios.get(url, {
+          headers: {
+              Cookie: `espn_s2=${espnS2}; SWID=${swid}`,
+          },
+      });
+
+      // Extract the current week (scoringPeriodId)
+      return response.data.scoringPeriodId;
+  } catch (error) {
+      throw new Error(`Error fetching data from ESPN API: ${error.message}`);
+  }
+};

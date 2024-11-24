@@ -134,3 +134,12 @@ exports.getLeaguesForUser = (req, res) => {
     res.status(200).json({ leagues });
   });
 };
+
+exports.getCurrentWeek = async (req, res) => {
+  try {
+      const currentWeek = await fetchCurrentWeekFromESPN();
+      res.status(200).json({ currentWeek });
+  } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch current week.', details: error.message });
+  }
+};
