@@ -1,8 +1,8 @@
+// mongoose/articleModel.js
 const mongoose = require('mongoose');
 
-// Define the Article schema
 const articleSchema = new mongoose.Schema({
-  headline: String,
+  headline: { type: String, unique: true, required: true },
   description: String,
   lastModified: Date,
   published: Date,
@@ -21,7 +21,7 @@ const articleSchema = new mongoose.Schema({
   byline: String,
 });
 
-// Create and export the Article model
+// Create the Article model with the schema
 const Article = mongoose.model('Article', articleSchema);
 
 module.exports = Article;
