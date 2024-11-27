@@ -1,24 +1,19 @@
-// mongoose/index.js
 const mongoose = require('mongoose');
 const axios = require('axios');
 const Article = require('./articleModel');
 
-// MongoDB connection function
 const connectDB = async () => {
     try {
-      // Try connecting to MongoDB
       await mongoose.connect(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
       console.log('Connected to MongoDB');
     } catch (error) {
-      // Log the error but don't terminate the app
       console.error('MongoDB connection error:', error);
     }
   };
 
-// Function to fetch articles from API and save to MongoDB
 const fetchAndSaveArticles = async () => {
     try {
       const response = await axios.get('https://nfl-football-api.p.rapidapi.com/nfl-news', {
@@ -30,7 +25,6 @@ const fetchAndSaveArticles = async () => {
   
       const articles = response.data.articles;
   
-      // Save articles to MongoDB, checking for duplicates based on the headline
       const savedArticles = [];
       for (let article of articles) {
         const existingArticle = await Article.findOne({ headline: article.headline });
@@ -66,16 +60,14 @@ const fetchAndSaveArticles = async () => {
     }
   };
 
-// Function to fetch articles from the MongoDB database
 const fetchArticlesFromDB = async (page, limit) => {
-    const skip = (page - 1) * limit;  // Calculate the number of articles to skip based on the page
+    const skip = (page - 1) * limit;
   
     try {
-      // Fetch articles with pagination (limit and skip)
       const articles = await Article.find()
         .skip(skip)
         .limit(limit)
-        .sort({ published: -1 });  // Sort by the most recent first
+        .sort({ published: -1 });
       return articles;
     } catch (error) {
       console.error('Error fetching articles from DB:', error);

@@ -5,7 +5,7 @@ const routes = require("./routes/index");
 const { connectDB, fetchAndSaveArticles } = require('./mongoose/index');
 
 const app = express();
-const port = 3000; // You can choose any port
+const port = 3000;
 
 connectDB();
 
@@ -17,13 +17,11 @@ fetchAndSaveArticles()
     console.error("Error fetching and saving articles:", error);
   });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
 app.use("/api", routes);
 
-// Start server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

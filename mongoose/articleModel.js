@@ -1,4 +1,3 @@
-// mongoose/articleModel.js
 const mongoose = require('mongoose');
 
 const articleSchema = new mongoose.Schema({
@@ -21,7 +20,6 @@ const articleSchema = new mongoose.Schema({
   byline: String,
 });
 
-// Create the Article model with the schema
 const Article = mongoose.model('Article', articleSchema);
 
 module.exports = Article;
