@@ -146,3 +146,68 @@ exports.getProjectedFantasyPoints = (playerID, week, callback) => {
     callback(null, result[0].fantasy_points); // Return the projected fantasy points
   });
 };
+
+exports.fetchProTeamsByUserID = (userID, callback) => {
+  // Step 1: Get the teamIDs from the TeamUser table for the given userID
+  const getTeamIDsQuery = `
+    SELECT tu.teamID
+    FROM TeamUser tu
+    WHERE tu.userID = ?
+  `;
+
+  db.query(getTeamIDsQuery, [userID], (err, teamResults) => {
+    if (err) {
+      return callback(err, null); // Pass the error to the callback
+    }
+
+    if (teamResults.length === 0) {
+      return callback(null, []); // No teams found for the user, return an empty array
+    }
+
+    // Step 2: Extract teamIDs from the result
+    const teamIDs = teamResults.map(row => row.teamID);
+
+    // Step 3: Get the playerIDs from the PlayerTeam table based on the teamIDs
+    const getPlayerIDsQuery = `
+      SELECT pt.playerID
+      FROM PlayerTeam pt
+      WHERE pt.teamID IN (?) 
+    `;
+
+    db.query(getPlayerIDsQuery, [teamIDs], (err, playerResults) => {
+      if (err) {
+        return callback(err, null); // Pass the error to the callback
+      }
+
+      if (playerResults.length === 0) {
+        return callback(null, []); // No players found for the teams, return an empty array
+      }
+
+      // Step 4: Extract playerIDs from the result
+      const playerIDs = playerResults.map(row => row.playerID);
+
+      // Step 5: Get the proTeam from the Players table for the playerIDs
+      const getProTeamsQuery = `
+        SELECT DISTINCT p.proTeam
+        FROM Players p
+        WHERE p.playerID IN (?)
+      `;
+
+      db.query(getProTeamsQuery, [playerIDs], (err, proTeamResults) => {
+        if (err) {
+          return callback(err, null); // Pass the error to the callback
+        }
+
+        if (proTeamResults.length === 0) {
+          return callback(null, []); // No proTeams found for the players, return an empty array
+        }
+
+        // Step 6: Extract the proTeams from the result
+        const proTeams = proTeamResults.map(row => row.proTeam);
+        callback(null, proTeams); // Return the list of pro teams
+      });
+    });
+  });
+};
+
+

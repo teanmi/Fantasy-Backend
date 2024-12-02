@@ -126,3 +126,22 @@ exports.getProjectedFantasyPoints = (req, res) => {
     res.status(200).json({ fantasy_points: fantasyPoints });
   });
 };
+
+exports.getProTeamsByUser = (req, res) => {
+  const { userID } = req.params;
+
+  if (!userID) {
+    return res.status(400).json({ error: "userID is required" });
+  }
+
+  // Call the model function with a callback
+  Player.fetchProTeamsByUserID(userID, (err, proTeams) => {
+    if (err) {
+      console.error('Error fetching pro teams:', err);
+      return res.status(500).json({ success: false, message: 'Server Error' });
+    }
+
+    res.status(200).json({ success: true, data: proTeams });
+  });
+};
+

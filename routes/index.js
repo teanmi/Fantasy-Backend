@@ -36,6 +36,7 @@ router.put('/player-slot', playerController.updateSlot);
 router.get('/players/:playerID/slot/:teamID/:leagueID', playerController.getPlayerSlot);
 router.get("/fantasy-points", playerController.getFantasyPoints);
 router.get("/projected-fantasy-points", playerController.getProjectedFantasyPoints);
+router.get('/pro-teams/:userID', playerController.getProTeamsByUser);
 
 // Auth Routes
 router.post("/auth/login", authController.login);
