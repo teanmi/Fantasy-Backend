@@ -11,6 +11,7 @@ const authController = require("../controllers/authController");
 
 // Leagues Routes
 router.post("/league/create", leagueController.createLeague);
+router.post("/league/delete", leagueController.deleteLeague);
 router.get("/league/:leagueID", leagueController.viewLeagueByID);
 router.get("/league/:leagueID/validate-code" , leagueController.validateLeagueCode);
 router.post("/league/user-link", leagueController.linkUserToLeague);

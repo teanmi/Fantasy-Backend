@@ -19,6 +19,26 @@ exports.createLeague = (req, res) => {
   });
 };
 
+exports.deleteLeague = (req, res) => {
+    const { leagueID } = req.body;
+
+    if (!leagueID) {
+        return res.status(400).json({ message: "League ID is required" });
+    }
+
+    League.deleteLeague(leagueID, (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: "Database error", error: err });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "League not found" });
+        }
+
+        res.status(200).json({ message: "League deleted successfully!" });
+    });
+};
+
 exports.viewLeagueByID = (req, res) => {
   const { leagueID } = req.params; // Get the dynamic leagueID from the URL
 

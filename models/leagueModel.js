@@ -40,6 +40,14 @@ exports.createLeague = (leagueName, numTeams, callback) => {
   });
 };
 
+exports.deleteLeague = (leagueID, callback) => {
+    const query = "DELETE FROM Leagues WHERE leagueID = ?";
+    
+    db.query(query, [leagueID], (err, result) => {
+        callback(err, result);
+    });
+    }
+
 exports.getTeamCountAndMax = (leagueID, callback) => {
   const query = `
       SELECT current_team_count, team_count 
